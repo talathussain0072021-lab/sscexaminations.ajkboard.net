@@ -414,11 +414,11 @@ include('includes/left_column.php');
 								<a href="#" id="printChallanBtn" original-title=""><span class="icon printer_co"></span><span class="btn_link">Print Challan</span></a>
 							</div>
 						</div>
-						<div class="invoice_action_bar" style="float: right;">
+						<!-- <div class="invoice_action_bar" style="float: right;">
 							<div class="btn_30_blue">
 								<a href="#" id="printFormsBtn" original-title=""><span class="icon printer_co"></span><span class="btn_link">Private Forms</span></a>
 							</div>
-						</div>
+						</div> -->
 						<div class="invoice_action_bar" style="float: right;">
 							<div class="btn_30_blue">
 								<a href="#" id="printAllFormsBtn" original-title=""><span class="icon printer_co"></span><span class="btn_link">Regular Forms</span></a>
