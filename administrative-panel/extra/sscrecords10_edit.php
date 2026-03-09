@@ -1,0 +1,563 @@
+<?php include('includes/top.php');?>
+<?php include('includes/left_column.php');?>
+<div id="container">
+	<?php include('includes/header.php');?>
+	<?php
+	if(isset($_REQUEST['submit']))
+	{
+		$Remarks = !empty($_REQUEST['Remarks']) ? "'".$_REQUEST['Remarks']."'" : "NULL";
+		
+		$sql_grp="SELECT Name FROM subjectgroups WHERE Id=".$_REQUEST['GroupId']."";
+		$res_grp=mysql_query($sql_grp, $conn1);
+		$row_grp=mysql_fetch_array($res_grp);
+		
+		$sql="UPDATE tbl_resultpii SET
+		GROUPID			=	".$_REQUEST['GroupId'].",
+		GROUP_NAME		=	'".$row_grp['Name']."',
+		COMBINATIONID	=	".$_REQUEST['CombinationId'].",
+		ROLL_NO			=	'".$_REQUEST['RollNo']."',
+		EXAM_YEAR		=	'".$_REQUEST['ExamYear']."',
+		EXAM_SESSION	=	'".$_REQUEST['ExamSession']."',
+		APPEAR_CODE		=	'".$_REQUEST['AppearCode']."',
+		SUB1_PASS		=	'".$_REQUEST['Sub1_Pass']."',
+		SUB21_PASS		=	'".$_REQUEST['Sub21_Pass']."',
+		S1_PASS			=	'".$_REQUEST['S1_Pass']."',
+		SUB2_PASS		=	'".$_REQUEST['Sub2_Pass']."',
+		SUB22_PASS		=	'".$_REQUEST['Sub22_Pass']."',
+		S2_PASS			=	'".$_REQUEST['S2_Pass']."',
+		SUB3_PASS		=	'".$_REQUEST['Sub3_Pass']."',
+		SUB31_PASS		=	'".$_REQUEST['Sub31_Pass']."',
+		S3_PASS			=	'".$_REQUEST['S3_Pass']."',
+		SUB231_PASS		=	'".$_REQUEST['Sub231_Pass']."',
+		SUB23_PASS		=	'".$_REQUEST['Sub23_Pass']."',
+		S3P_PASS		=	'".$_REQUEST['S3P_Pass']."',
+		SUB4_CODE		=	'".$_REQUEST['Sub4_Code']."',
+		SUB4_NAME		=	'".$_REQUEST['Sub4_Name']."',
+		SUB4_PASS		=	'".$_REQUEST['Sub4_Pass']."',
+		SUB24_CODE		=	'".$_REQUEST['Sub24_Code']."',
+		SUB24_NAME		=	'".$_REQUEST['Sub24_Name']."',
+		SUB24_PASS		=	'".$_REQUEST['Sub24_Pass']."',
+		S4_PASS			=	'".$_REQUEST['S4_Pass']."',
+		SUB5_CODE		=	'".$_REQUEST['Sub5_Code']."',
+		SUB5_NAME		=	'".$_REQUEST['Sub5_Name']."',
+		SUB5_PASS		=	'".$_REQUEST['Sub5_Pass']."',
+		SUB25_CODE		=	'".$_REQUEST['Sub25_Code']."',
+		SUB25_NAME		=	'".$_REQUEST['Sub25_Name']."',
+		SUB25_PASS		=	'".$_REQUEST['Sub25_Pass']."',
+		SUB251_CODE		=	'".$_REQUEST['Sub251_Code']."',
+		SUB251_PASS		=	'".$_REQUEST['Sub251_Pass']."',
+		S5_PASS			=	'".$_REQUEST['S5_Pass']."',
+		SUB6_CODE		=	'".$_REQUEST['Sub6_Code']."',
+		SUB6_NAME		=	'".$_REQUEST['Sub6_Name']."',
+		SUB6_PASS		=	'".$_REQUEST['Sub6_Pass']."',
+		SUB26_CODE		=	'".$_REQUEST['Sub26_Code']."',
+		SUB26_NAME		=	'".$_REQUEST['Sub26_Name']."',
+		SUB26_PASS		=	'".$_REQUEST['Sub26_Pass']."',
+		SUB261_CODE		=	'".$_REQUEST['Sub261_Code']."',
+		SUB261_PASS		=	'".$_REQUEST['Sub261_Pass']."',
+		S6_PASS			=	'".$_REQUEST['S6_Pass']."',
+		SUB7_CODE		=	'".$_REQUEST['Sub7_Code']."',
+		SUB7_NAME		=	'".$_REQUEST['Sub7_Name']."',
+		SUB7_PASS		=	'".$_REQUEST['Sub7_Pass']."',
+		SUB27_CODE		=	'".$_REQUEST['Sub27_Code']."',
+		SUB27_NAME		=	'".$_REQUEST['Sub27_Name']."',
+		SUB27_PASS		=	'".$_REQUEST['Sub27_Pass']."',
+		SUB271_CODE		=	'".$_REQUEST['Sub271_Code']."',
+		SUB271_PASS		=	'".$_REQUEST['Sub271_Pass']."',
+		S7_PASS			=	'".$_REQUEST['S7_Pass']."',
+		RESULT			=	'".$_REQUEST['Result']."',
+		ATTEMPT_LIMIT	=	'".$_REQUEST['AttemptLimit']."',
+		REMARKS			=	".$Remarks."
+		WHERE ID		=	".$_REQUEST['Id']."";
+		$res=mysql_query($sql, $conn1);
+		
+		if($res==1)
+		{
+			$ins="INSERT INTO tbl_resultlog SET
+			ActivityType		=		'ResultUpdation-II',
+			ActivityRefNo		=		'".$_REQUEST['ActivityRefNo']."',
+			StudentId			=		".$_REQUEST['Id'].",
+			EmployeeId			=		".$_SESSION['emp_id']."";
+			$res=mysql_query($ins, $conn1);
+			
+			?><script>alert('Information Processed Successfully.');location.replace('sscrecords10.php');</script><?php
+		}
+		else
+		{
+			?><script>alert('Error in Query.');location.replace('sscrecords10_edit.php?Id=<?php echo $_REQUEST['Id'];?>');</script><?php
+		}
+	}
+	?>
+	<?php
+	$sql="SELECT ID, NAME, FNAME, EXAM_YEAR, ROLL_NO, EXAM_SESSION, APPEAR_CODE, RESULT, ATTEMPT_LIMIT, REMARKS FROM tbl_resultpii WHERE ID=".$_REQUEST['Id']."";
+	$res=mysql_query($sql, $conn1);
+	$row=mysql_fetch_array($res);
+	?>
+
+	<div id="content">
+		<div class="grid_container">
+			<div class="grid_12 full_block">
+				<div class="widget_wrap">
+					<div class="widget_top">
+						<span></span>
+						<h6>Update Result</h6>
+					</div>
+
+					<div class="widget_content">
+						<form action="" method="post" class="form_container left_label" onSubmit="return check_submit_form();">
+							<ul>
+								<li>
+								<fieldset>
+									<legend>Result Info</legend>
+									<ul>
+										<li>
+										<div class="form_grid_6">
+											<label class="field_title">Student Name<span class="req">*</span></label>
+											<div class="form_input">
+												<input name="Name" id="Name" type="text" value="<?php echo $row['NAME'];?>" class="x_large" readonly/>
+											</div>
+										</div>
+										<div class="form_grid_6">
+											<label class="field_title">Father's Name<span class="req">*</span></label>
+											<div class="form_input">
+												<input name="FatherName" id="FatherName" type="text" value="<?php echo $row['FNAME'];?>" class="x_large" readonly/>
+											</div>
+										</div>
+										<br /><br />
+										</li>
+										
+										<li>
+										<div class="form_grid_6">
+											<label class="field_title">Appear Code<span class="req">*</span></label>
+											<div class="form_input">
+												<input name="AppearCode" id="AppearCode" type="text" data-required="required" data-message="Enter Appear Code" value="<?php echo $row['APPEAR_CODE'];?>" class="x_large" onkeypress="return isNumber()" maxlength="1" tabindex="1"/>
+											</div>
+										</div>
+										<div class="form_grid_6">
+											<label class="field_title">Roll Number<span class="req">*</span></label>
+											<div class="form_input">
+												<input name="RollNo" id="RollNo" type="text" data-required="required" data-message="Enter Roll Number" value="<?php echo $row['ROLL_NO'];?>" class="x_large" onkeypress="return isNumber()" maxlength="6" tabindex="2"/>
+											</div>
+										</div>
+										<br /><br />
+										</li>
+										
+										<li>
+										<div class="form_grid_6">
+											<label class="field_title">Exam Year<span class="req">*</span></label>
+											<div class="form_input">
+												<input name="ExamYear" id="ExamYear" type="text" data-required="required" data-message="Enter Exam Year" value="<?php echo $row['EXAM_YEAR'];?>" class="x_large" onkeypress="return isNumber()" maxlength="2" tabindex="3"/>
+											</div>
+										</div>
+										<div class="form_grid_6">
+											<label class="field_title">Session<span class="req">*</span></label>
+											<div class="form_input">
+												<input name="ExamSession" id="ExamSession" type="text" data-required="required" data-message="Enter Exam Session" value="<?php echo $row['EXAM_SESSION'];?>" class="x_large" onkeypress="return isNumber()" maxlength="1" tabindex="4"/>
+											</div>
+										</div>
+										<br /><br />
+										</li>
+										
+										
+										<li>
+										<div class="form_grid_6">
+											<label class="field_title">Group<span class="req">*</span></label>
+											<div class="form_input">
+												<select name="GroupId" id="GroupId" data-required="required" data-message="Choose Group" class="chzn-select custom-select" tabindex="5">
+												<option value="">Select</option>
+												</select>
+											</div>
+										</div>
+										<div class="form_grid_6">
+											<label class="field_title">Combination<span class="req">*</span></label>
+											<div class="form_input">
+												<select name="CombinationId" id="CombinationId" data-required="required" data-message="Choose Combination" class="chzn-select custom-select" tabindex="6">
+												<option value="">Select</option>
+												</select>
+											</div>
+										</div>
+										<br /><br />
+										</li>
+										
+										<li>
+										<fieldset>
+											<legend>All Subjects</legend>
+											<ul>
+												<li>
+												<table id="tbl-subjects" class="search">
+												<tr>
+													<td align="center"></td>
+													<td align="center"><label style="font-weight:bold;">P1 Subjects</label></td>
+													<td align="center"><label style="font-weight:bold;">P1 Pass/Fail</label></td>
+													<td align="center"></td>
+													<td align="center"><label style="font-weight:bold;">P2 Subjects</label></td>
+													<td align="center"><label style="font-weight:bold;">P2 Pass/Fail</label></td>
+													<td align="center"><label style="font-weight:bold;">Practical Pass/Fail</label></td>
+													<td align="center"><label style="font-weight:bold;">Overall Pass/Fail</label></td>
+												</tr>
+												<tr>
+													<td><label style="font-weight:bold;">SUB1.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub1_Name" id="Sub1_Name" type="text" class="x_large" readonly/>
+														<input name="Sub1_Code" id="Sub1_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub1_Pass" id="Sub1_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="7">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td><label style="font-weight:bold;">SUB21.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub21_Name" id="Sub21_Name" type="text" class="x_large" readonly/>
+														<input name="Sub21_Code" id="Sub21_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub21_Pass" id="Sub21_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="8">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td></td>
+													<td>
+														<select name="S1_Pass" id="S1_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="9">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td><label style="font-weight:bold;">SUB2.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub2_Name" id="Sub2_Name" type="text" class="x_large" readonly/>
+														<input name="Sub2_Code" id="Sub2_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub2_Pass" id="Sub2_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="10">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td><label style="font-weight:bold;">SUB22.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub22_Name" id="Sub22_Name" type="text" class="x_large" readonly/>
+														<input name="Sub22_Code" id="Sub22_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub22_Pass" id="Sub22_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="11">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td></td>
+													<td>
+														<select name="S2_Pass" id="S2_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="12">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td><label style="font-weight:bold;">SUB3.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub3_Name" id="Sub3_Name" type="text" class="x_large" readonly/>
+														<input name="Sub3_Code" id="Sub3_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub3_Pass" id="Sub3_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="13">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td><label style="font-weight:bold;">SUB23.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub31_Name" id="Sub31_Name" type="text" class="x_large" readonly/>
+														<input name="Sub31_Code" id="Sub31_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub31_Pass" id="Sub31_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="14">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td></td>
+													<td>
+														<select name="S3_Pass" id="S3_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="15">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td><label style="font-weight:bold;">SUB4.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub231_Name" id="Sub231_Name" type="text" class="x_large" readonly/>
+														<input name="Sub231_Code" id="Sub231_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub231_Pass" id="Sub231_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="16">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td><label style="font-weight:bold;">SUB24.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub23_Name" id="Sub23_Name" type="text" class="x_large" readonly/>
+														<input name="Sub23_Code" id="Sub23_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub23_Pass" id="Sub23_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="17">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td></td>
+													<td>
+														<select name="S3P_Pass" id="S3P_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="18">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td><label style="font-weight:bold;">SUB5.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub4_Name" id="Sub4_Name" type="text" class="x_large" readonly/>
+														<input name="Sub4_Code" id="Sub4_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub4_Pass" id="Sub4_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="19">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td><label style="font-weight:bold;">SUB25.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub24_Name" id="Sub24_Name" type="text" class="x_large" readonly/>
+														<input name="Sub24_Code" id="Sub24_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub24_Pass" id="Sub24_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="20">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td></td>
+													<td>
+														<select name="S4_Pass" id="S4_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="21">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td><label style="font-weight:bold;">SUB6.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub5_Name" id="Sub5_Name" type="text" class="x_large" readonly/>
+														<input name="Sub5_Code" id="Sub5_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub5_Pass" id="Sub5_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="22">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td><label style="font-weight:bold;">SUB26.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub25_Name" id="Sub25_Name" type="text" class="x_large" readonly/>
+														<input name="Sub25_Code" id="Sub25_Code" type="hidden"/>
+														<input name="Sub251_Code" id="Sub251_Code" type="hidden" />
+													</td>
+													<td>
+														<select name="Sub25_Pass" id="Sub25_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="23">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td>
+														<select name="Sub251_Pass" id="Sub251_Pass" data-message="Choose Status" class="chzn-select small-select" tabindex="24">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td>
+														<select name="S5_Pass" id="S5_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="25">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td><label style="font-weight:bold;">SUB7.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub6_Name" id="Sub6_Name" type="text" class="x_large" readonly/>
+														<input name="Sub6_Code" id="Sub6_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub6_Pass" id="Sub6_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="26">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td><label style="font-weight:bold;">SUB27.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub26_Name" id="Sub26_Name" type="text" class="x_large" readonly/>
+														<input name="Sub26_Code" id="Sub26_Code" type="hidden"/>
+														<input name="Sub261_Code" id="Sub261_Code" type="hidden" />
+													</td>
+													<td>
+														<select name="Sub26_Pass" id="Sub26_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="27">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td>
+														<select name="Sub261_Pass" id="Sub261_Pass" data-message="Choose Status" class="chzn-select small-select" tabindex="28">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td>
+														<select name="S6_Pass" id="S6_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="29">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td><label style="font-weight:bold;">SUB8.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub7_Name" id="Sub7_Name" type="text" class="x_large" readonly/>
+														<input name="Sub7_Code" id="Sub7_Code" type="hidden"/>
+													</td>
+													<td>
+														<select name="Sub7_Pass" id="Sub7_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="30">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td><label style="font-weight:bold;">SUB28.<span style="color:#FF0000;"> *</span></label></td>
+													<td>
+														<input name="Sub27_Name" id="Sub27_Name" type="text" class="x_large" readonly/>
+														<input name="Sub27_Code" id="Sub27_Code" type="hidden"/>
+														<input name="Sub271_Code" id="Sub271_Code" type="hidden" />
+													</td>
+													<td>
+														<select name="Sub27_Pass" id="Sub27_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="31">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td>
+														<select name="Sub271_Pass" id="Sub271_Pass" data-message="Choose Status" class="chzn-select small-select" tabindex="32">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+													<td>
+														<select name="S7_Pass" id="S7_Pass" data-required="required" data-message="Choose Status" class="chzn-select small-select" tabindex="33">
+														<option value="">Select</option>
+														<option value="PASS">PASS</option>
+														<option value="FAIL">FAIL</option>
+														</select>
+													</td>
+												</tr>
+												</table>
+												</li>
+											</ul>
+										</li>
+										
+										<li>
+										<div class="form_grid_6">
+											<label class="field_title">Result<span class="req">*</span></label>
+											<div class="form_input">
+												<select name="Result" id="Result" data-required="required" data-message="Choose Result" class="chzn-select small-select" tabindex="34">
+												<option value="">Select</option>
+												<option value="PASS" <?php echo ((trim($row['RESULT'])=='PASS')?'selected':'');?>>PASS</option>
+												<option value="SUPPLY" <?php echo ((trim($row['RESULT'])=='SUPPLY')?'selected':'');?>>SUPPLY</option>
+												<option value="FAIL" <?php echo ((trim($row['RESULT'])=='FAIL')?'selected':'');?>>FAIL</option>
+												<option value="ABSENT" <?php echo ((trim($row['RESULT'])=='ABSENT')?'selected':'');?>>ABSENT</option>
+												</select>
+											</div>
+										</div>
+										<div class="form_grid_6">
+											<label class="field_title">Attempt Limit<span class="req">*</span></label>
+											<div class="form_input">
+												<input name="AttemptLimit" id="AttemptLimit" type="text" data-required="required" data-message="Enter Attempt Limit" value="<?php echo $row['ATTEMPT_LIMIT'];?>" class="x_large" onkeypress="return isNumber()" maxlength="3" tabindex="35"/>
+											</div>
+										</div>
+										<br /><br />
+										</li>
+										
+										<li>
+										<div class="form_grid_6">
+											<label class="field_title">Remarks</label>
+											<div class="form_input">
+												<input name="Remarks" id="Remarks" type="text" value="<?php echo $row['REMARKS'];?>" class="x_large" onkeypress="return isNumber()" maxlength="2" tabindex="36"/>
+											</div>
+										</div>
+										<div class="form_grid_6">
+											<label class="field_title">Letter No<span class="req">*</span></label>
+											<div class="form_input">
+												<input name="ActivityRefNo" id="ActivityRefNo" type="text" data-required="required" data-message="Enter Letter No" class="x_large" maxlength="50" tabindex="37"/>
+											</div>
+										</div>
+										<br /><br />
+										</li>
+										
+										<li>
+										<div class="form_grid_12">
+											<div class="form_input">
+												<input type="hidden" name="Id" id="Id" value="<?php echo $_REQUEST['Id'];?>"/>
+												<button type="submit" name="submit" value="submit" class="btn_small btn_blue" tabindex="38"><span>Update</span></button>
+												<button type="reset" class="btn_small btn_blue" onclick="location.replace('sscrecords10_edit.php?Id=<?php echo $_REQUEST['Id'];?>')" tabindex="39"><span>Reset</span></button>
+											</div>
+											<span class="clear"></span>
+										</div>
+										</li>
+									</ul>
+								</fieldset>
+								</li>
+							</ul>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<span class="clear"></span>
+	</div>
+</div>
+<?php include('includes/footer.php');?>
+<script>
+function check_submit_form()
+{
+	if(!Validate($(".form_container"))){ return false; }
+}//check_submit_form
+</script>
+<script type="text/javascript" src="js/precord-updation10.js"></script>

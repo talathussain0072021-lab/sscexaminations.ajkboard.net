@@ -1,0 +1,188 @@
+<?php include('includes/top.php');?>
+<?php include('includes/left_column.php');?>
+<div id="container">
+	<?php include('includes/header.php');?>
+	<?php
+	if(isset($_REQUEST['submit1']))
+	{
+		$sql1="SELECT Id, BatchStatus, AdmStatus, RevStatus FROM vwadmbatches10 WHERE BatchNo='".$_REQUEST['BatchNo']."' AND BatchType=2 AND ExamId=".$ExamId."";
+		$res1=mysql_query($sql1, $conn1);
+		$row1=mysql_fetch_array($res1);
+		$num_rows=mysql_num_rows($res1);
+		
+		$BatchStatus=$row1['BatchStatus'];
+		if($row1['RevStatus'] == 1){ $BatchStatus=6; }
+		
+		if($num_rows > 0)
+		{
+			$sql2="UPDATE admbatches10 SET
+			AdmStatus			=		1,
+			BatchStatus			=		".$BatchStatus."
+			WHERE Id			=		".$row1['Id']."";
+			$res2=mysql_query($sql2, $conn1);
+			
+			$sql3="UPDATE admbatchstudents10 SET
+			AdmStatus			=		1
+			WHERE BatchId		=		".$row1['Id']."";
+			$res3=mysql_query($sql3, $conn1);
+			?><script>alert('Batch Updated Successfully.');location.replace('adm_padmbatches_add10.php');</script><?php
+		}
+		else
+		{ ?><script>alert('Batch not Found.');location.replace('adm_padmbatches_add10.php');</script><?php }
+	}//if(isset($_REQUEST['submit1']))
+	
+	if(isset($_REQUEST['submit2']))
+	{
+		$sql1="SELECT Id FROM vwadmbatches10 WHERE BatchNo='".$_REQUEST['BatchNo']."' AND BatchType=2 AND ExamId=".$ExamId."";
+		$res1=mysql_query($sql1, $conn1);
+		$row1=mysql_fetch_array($res1);
+		$num_rows=mysql_num_rows($res1);
+		
+		if($num_rows > 0)
+		{
+			$sql2="UPDATE admbatches10 SET
+			AdmStatus			=		2,
+			BatchStatus			=		1
+			WHERE Id			=		".$row1['Id']."";
+			$res2=mysql_query($sql2, $conn1);
+			
+			$sql3="UPDATE admbatchstudents10 SET
+			AdmStatus			=		2
+			WHERE BatchId		=		".$row1['Id']."";
+			$res3=mysql_query($sql3, $conn1);
+			?><script>alert('Batch Updated Successfully.');location.replace('adm_padmbatches_add10.php');</script><?php
+		}
+		else
+		{ ?><script>alert('Batch not Found.');location.replace('adm_padmbatches_add10.php');</script><?php }
+	}//if(isset($_REQUEST['submit2']))
+	
+	if(isset($_REQUEST['submit3']))
+	{
+		$sql1="SELECT Id FROM vwadmbatches10 WHERE BatchNo='".$_REQUEST['BatchNo']."' AND BatchType=2 AND ExamId=".$ExamId."";
+		$res1=mysql_query($sql1, $conn1);
+		$row1=mysql_fetch_array($res1);
+		$num_rows=mysql_num_rows($res1);
+		
+		if($num_rows > 0)
+		{
+			$sql2="UPDATE admbatches10 SET
+			AdmStatus			=		0,
+			BatchStatus			=		1
+			WHERE Id			=		".$row1['Id']."";
+			$res2=mysql_query($sql2, $conn1);
+			
+			$sql3="UPDATE admbatchstudents10 SET
+			AdmStatus			=		0
+			WHERE BatchId		=		".$row1['Id']."";
+			$res3=mysql_query($sql3, $conn1);
+			?><script>alert('Batch Updated Successfully.');location.replace('adm_padmbatches_add10.php');</script><?php
+		}
+		else
+		{ ?><script>alert('Batch not Found.');location.replace('adm_padmbatches_add10.php');</script><?php }
+	}//if(isset($_REQUEST['submit3']))
+	?>
+
+	<div id="content">
+		<div class="grid_container">
+			<div class="grid_12 full_block">
+				<div class="widget_wrap">
+					<div class="widget_top">
+						<span></span>
+						<h6>Add Record</h6>
+					</div>
+					
+					<div class="widget_content">
+						<form action="" method="post" class="form_container left_label" onSubmit="return check_submit_form();" enctype="multipart/form-data">
+							<ul>
+								<li>
+								<div class="form_grid_12">
+									<label class="field_title">Batch No<span class="req">*</span></label>
+									<div class="form_input">
+										<input name="BatchNo" id="BatchNo" type="text" data-required="required" data-message="Enter BatchNo" class="limiter abc" onkeypress="return isNumber()" onblur="update_record();" maxlength="9" tabindex="1"/>
+										<input name="ExamId" id="ExamId" type="hidden" value="<?php echo $ExamId;?>"/>
+									</div>
+								</div>
+								</li>
+								
+								<li>
+								<div class="form_grid_12">
+									<label class="field_title">Std Count</label>
+									<div class="form_input">
+										<input name="StdCount" id="StdCount" type="text" class="limiter" readonly/>
+									</div>
+								</div>
+								</li>
+								
+								<li>
+								<div class="form_grid_12">
+									<label class="field_title">Adm Status</label>
+									<div class="form_input">
+										<input name="AdmStatus" id="AdmStatus" type="text" class="limiter" readonly/>
+									</div>
+								</div>
+								</li>
+								
+								<li>
+								<div class="form_grid_12">
+									<div class="form_input">
+										<button type="submit" name="submit1" value="submit" class="btn_small btn_blue" tabindex="2"><span>Ok</span></button>
+										<button type="submit" name="submit2" value="submit" class="btn_small btn_blue" tabindex="3"><span>Not Ok</span></button>
+										<button type="submit" name="submit3" value="submit" class="btn_small btn_blue" tabindex="4"><span>Null</span></button>
+										<button type="reset" class="btn_small btn_blue" tabindex="5"><span>Reset</span></button>
+									</div>
+								</div>
+								</li>
+							</ul>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<span class="clear"></span>
+	</div>
+</div>
+<?php include('includes/footer.php');?>
+<script>
+function check_submit_form()
+{
+	if(!Validate($(".form_container"))){ return false; }
+}//check_submit_form()
+
+$(document).ready(function(){
+	load_data();
+})
+function load_data()
+{
+	$.ajax
+	({
+		type: "POST",
+		url: "ajax_batchesdata.php",
+		dataType: "json",
+		success: function(data)
+		{
+			AppData.AdmBatches10=data.AdmBatches10;
+		}
+	});
+}
+function update_record()
+{
+	var BatchNo=document.getElementById('BatchNo').value;
+	var ExamId=document.getElementById('ExamId').value;
+	
+	var BatchInfo = $.grep(AppData.AdmBatches10, function (e) { return e.BatchNo == BatchNo && e.ExamId == ExamId; })[0];
+	
+	if(BatchInfo.BatchStatus == 1 || BatchInfo.BatchStatus == 6)
+	{
+		$("#StdCount").val(BatchInfo.StdCount);
+		if(BatchInfo.AdmStatus == 1){ $("#AdmStatus").val("OK"); }
+		else if(BatchInfo.AdmStatus == 2){ $("#AdmStatus").val("NOT OK"); }
+		else if(BatchInfo.AdmStatus == 0){ $("#AdmStatus").val("PENDING"); }
+	}
+	else
+	{
+		$("#BatchNo").val("");
+		alert('Check Batch again');
+		return false;
+	}
+}
+</script>

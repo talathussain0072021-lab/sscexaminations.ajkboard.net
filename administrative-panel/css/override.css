@@ -1,0 +1,25 @@
+﻿.custom-select {
+    width: 200px !important;
+}
+
+.custom-selectsm {
+    width: 170px !important;
+}
+
+.custom-selectxsm {
+    width: 165px !important;
+}
+
+.admin-select {
+    width: 150px !important;
+}
+
+.small-select {
+    width: 100px !important;
+}
+
+.offscreen {
+    left: -9999px !important;
+    top: -9999px !important;
+    position: absolute;
+}

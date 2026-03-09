@@ -1,0 +1,41 @@
+{
+    "files.watcherExclude": {
+        "**/TCPDF/**": true,
+        "**/MPDF57/**": true,
+        "**/vendor/**": true,
+        "**/node_modules/**": true,
+        "**/images/**": true,
+        "**/swf/**": true,
+        "**/media/**": true
+    },
+    "files.exclude": {
+        "**/TCPDF/**": true,
+        "**/MPDF57/**": true,
+        "**/vendor/**": true,
+        "**/node_modules/**": true
+    },
+    "search.exclude": {
+        "**/TCPDF/**": true,
+        "**/MPDF57/**": true,
+        "**/vendor/**": true,
+        "**/node_modules/**": true,
+        "**/images/**": true,
+        "**/swf/**": true,
+        "**/media/**": true
+    },
+    "files.autoSave": "onFocusChange",
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": false
+    },
+    "intelephense.files.exclude": [
+        "**/TCPDF/**",
+        "**/MPDF57/**",
+        "**/vendor/**"
+    ],
+    "php.validate.executablePath": null,
+    "extensions.experimental.affinity": {
+        "felixfbecker.php-intellisense": 1
+    }
+}
